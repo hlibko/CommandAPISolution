@@ -8,7 +8,8 @@ builder.Services.AddControllers();
 var postgreSqlConnection = builder.Configuration.GetConnectionString("PostgreSqlConnection");
 builder.Services.AddDbContext<CommandContext>(opt => opt.UseNpgsql(postgreSqlConnection));
 
-builder.Services.AddScoped<ICommandAPIRepo, MockCommandAPIRepo>();
+//builder.Services.AddScoped<ICommandAPIRepo, MockCommandAPIRepo>();
+builder.Services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
 
 var app = builder.Build();
 
