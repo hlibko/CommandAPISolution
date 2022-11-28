@@ -71,6 +71,18 @@ namespace CommandAPI.Controllers
         }
 
         [HttpPatch("{id}")]
+        //[
+        //  {
+        //    "op": "Replace",
+        //    "path": "/platform",
+        //    "value": "Linux22"
+        //  },
+        //  {
+        //    "op": "Test",
+        //    "path": "/commandLine",
+        //    "value": "2222"
+        //  }
+        //]
         public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDoc)
         {
             var commandModelFromRepo = _repository.GetCommandById(id);
@@ -92,6 +104,22 @@ namespace CommandAPI.Controllers
             _repository.UpdateCommand(commandModelFromRepo);
             _repository.SaveChanges();
 
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public ActionResult DeleteCommand(int id)
+        {
+            var commandModelFromRepo = _repository.GetCommandById(id);
+            
+            if (commandModelFromRepo == null)
+            {
+                return NotFound();
+            }
+            
+            _repository.DeleteCommand(commandModelFromRepo);
+            _repository.SaveChanges();
+            
             return NoContent();
         }
     }
