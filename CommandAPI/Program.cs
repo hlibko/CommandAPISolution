@@ -1,4 +1,5 @@
 using CommandAPI.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Serialization;
 using Npgsql;
@@ -10,6 +11,12 @@ npgsqlConBuilder.ConnectionString = builder.Configuration.GetConnectionString("P
 npgsqlConBuilder.Username = builder.Configuration["UserID"];
 npgsqlConBuilder.Password = builder.Configuration["Password"];
 builder.Services.AddDbContext<CommandContext>(opt => opt.UseNpgsql(npgsqlConBuilder.ConnectionString));
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+ {
+     opt.Audience = builder.Configuration["ResourceId"];
+     opt.Authority = $"{builder.Configuration["Instance"]}{builder.Configuration["TenantId"]}";
+ });
 
 builder.Services.AddControllers().AddNewtonsoftJson(s =>
 {
@@ -29,8 +36,10 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
