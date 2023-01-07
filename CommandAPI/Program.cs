@@ -30,11 +30,15 @@ builder.Services.AddScoped<ICommandAPIRepo, SqlCommandAPIRepo>();
 var app = builder.Build();
 
 // migrate database changes on startup
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<CommandContext>();
-    db.Database.Migrate();
-}
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<CommandContext>();
+db.Database.Migrate();
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<CommandContext>();
+//    db.Database.Migrate();
+//}
 
 app.UseHttpsRedirection();
 
