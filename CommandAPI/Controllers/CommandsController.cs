@@ -43,6 +43,7 @@ namespace CommandAPI.Controllers
             return Ok(_mapper.Map<CommandReadDto>(commandItem));
         }
 
+        [Authorize]
         [HttpPost]
         public ActionResult<CommandReadDto> CreateCommand(CommandCreateDto commandCreateDto)
         {
@@ -55,6 +56,7 @@ namespace CommandAPI.Controllers
             return CreatedAtRoute(nameof(GetCommandById), new { commandReadDto.Id }, commandReadDto);
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public ActionResult UpdateCommand(int id, CommandUpdateDto commandUpdateDto)
         {
@@ -72,6 +74,7 @@ namespace CommandAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPatch("{id}")]
         //[
         //  {
@@ -109,6 +112,7 @@ namespace CommandAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public ActionResult DeleteCommand(int id)
         {
